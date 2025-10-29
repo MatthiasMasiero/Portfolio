@@ -107,6 +107,7 @@ const PROFILE = {
   links: {
     github: "https://github.com/MatthiasMasiero",
     linkedin: "https://www.linkedin.com/in/matthiasmasiero",
+    resume: "/Resume.pdf",
   },
 };
 
@@ -339,7 +340,7 @@ function Header() {
             <div className="flex flex-wrap gap-2 mt-5">
               {PROFILE.links.resume !== "#" && (
                 <Button asChild>
-                  <a href={PROFILE.links.resume}>
+                  <a href={PROFILE.links.resume} download target="_blank" rel="noreferrer">
                     <Download className="w-4 h-4 mr-2" /> Resume
                   </a>
                 </Button>
