@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --bg: #0b0d10;
+}
+
+html, body, #root { height: 100%; }
+body{ background: var(--bg); }
