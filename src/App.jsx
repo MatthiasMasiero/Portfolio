@@ -38,6 +38,7 @@ function Button({ asChild = false, variant = "primary", className = "", children
   );
 }
 
+
 function AnimatedBackground() {
   return (
     <>
@@ -94,6 +95,10 @@ function AnimatedBackground() {
       </div>
     </>
   );
+}
+
+function SmoothScrollStyles(){
+  return <style>{`html{scroll-behavior:smooth}`}</style>;
 }
 
 const PROFILE = {
@@ -183,6 +188,30 @@ const PROJECTS = [
     tags: ["Machine Learning", "Sports Analytics", "Python", "AWS"],
     links: [],
     icon: <Rocket className="w-5 h-5" />,
+  },
+];
+
+const QUANTUM = [
+  {
+    title: "Qiskit 101 — Quantum Circuits",
+    desc: "Notebook series exploring qubits, superposition, measurement, and simple 1–2 qubit circuits in Qiskit (IBM Quantum).",
+    tags: ["Qiskit", "IBM Quantum", "Circuits"],
+    links: [],
+    icon: <Cpu className="w-5 h-5" />,
+  },
+  {
+    title: "Grover’s Algorithm Demo",
+    desc: "Implements amplitude amplification to search an unsorted database faster than classical methods; includes oracle design notes.",
+    tags: ["Qiskit", "Grover", "Amplitude Amplification"],
+    links: [],
+    icon: <Sparkles className="w-5 h-5" />,
+  },
+  {
+    title: "Quantum Teleportation (Simulation)",
+    desc: "End-to-end protocol simulation with Bell pair creation, classical channel, and state fidelity checks.",
+    tags: ["Qiskit", "Teleportation", "Simulation"],
+    links: [],
+    icon: <Globe className="w-5 h-5" />,
   },
 ];
 
@@ -309,6 +338,9 @@ function Header() {
               <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer">
                 <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
               </a>
+            </Button>
+            <Button variant="secondary" asChild>
+              <a href="#projects">Projects</a>
             </Button>
           </div>
         </nav>
@@ -450,6 +482,7 @@ function Education() {
 export default function App() {
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
+      <SmoothScrollStyles />
       <AnimatedBackground />
       <div className="relative z-20">
         <Header />
@@ -457,6 +490,14 @@ export default function App() {
         <Section id="projects" title="Selected Projects">
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
             {PROJECTS.map((p, i) => (
+              <ProjectCard p={p} key={i} />
+            ))}
+          </div>
+        </Section>
+
+        <Section id="quantum" title="Quantum">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {QUANTUM.map((p, i) => (
               <ProjectCard p={p} key={i} />
             ))}
           </div>
