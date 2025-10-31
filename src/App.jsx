@@ -188,6 +188,16 @@ const PROJECTS = [
     links: [],
     icon: <Rocket className="w-5 h-5" />,
   },
+  {
+    title: "This Website!",
+    desc:
+      "The code for my React + Vite + Tailwind portfolio with framer-motion animations, ambient background, and smooth-scrolling sections.",
+    tags: ["React", "Vite", "Tailwind", "Framer Motion"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/Portfolio", label: "GitHub" },
+    ],
+    icon: <Globe className="w-5 h-5" />,
+  },
 ];
 
 const QUANTUM = [
