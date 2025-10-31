@@ -118,6 +118,17 @@ function AnimatedBackground() {
           }}
         />
       </div>
+      {/* Mobile-only backfill to ensure the background always covers the full page height on phones.
+          This sits UNDER the current animated layers and does not affect desktop. */}
+      <div
+        className="fixed inset-0 -z-10 pointer-events-none sm:hidden"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 20%, rgba(29,78,216,.16), transparent 70%)," +
+            "radial-gradient(110% 85% at 70% 80%, rgba(139,92,246,.14), transparent 70%)," +
+            "radial-gradient(100% 80% at 30% 90%, rgba(16,185,129,.10), transparent 65%)",
+        }}
+      />
     </>
   );
 }
