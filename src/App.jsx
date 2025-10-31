@@ -6,6 +6,31 @@ function cn(...parts){
   return parts.filter(Boolean).join(" ");
 }
 
+// --- Small hooks for responsive and reduced motion ---
+function useIsMobile(breakpoint = 640) {
+  const [isMobile, setIsMobile] = React.useState(() => typeof window !== 'undefined' && window.innerWidth <= breakpoint);
+  React.useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener?.('change', onChange);
+    return () => mq.removeEventListener?.('change', onChange);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = () => setReduced(mq.matches);
+    onChange();
+    mq.addEventListener?.('change', onChange);
+    return () => mq.removeEventListener?.('change', onChange);
+  }, []);
+  return reduced;
+}
+
 function Card({ className = "", children }) {
   return (
     <div className={cn("rounded-2xl border border-white/10 bg-white/5", className)}>{children}</div>
@@ -268,7 +293,7 @@ const EDUCATION = [
 // ---- UI ---------------------------------------------------------------------
 function Section({ id, title, children }) {
   return (
-    <section id={id} className="max-w-6xl mx-auto px-4 py-14">
+    <section id={id} className="max-w-6xl mx-auto px-4 py-10 md:py-14">
       <motion.h2
         className="text-3xl md:text-4xl font-extrabold tracking-tight"
         initial={{ opacity: 0, y: 8 }}
@@ -300,7 +325,7 @@ function ProjectCard({ p }) {
       transition={{ duration: 0.35 }}
     >
       <Card className="bg-white/5 border-white/10 hover:bg-white/20 transition-colors h-full">
-        <CardContent className="p-5 flex flex-col gap-3">
+        <CardContent className="p-4 md:p-5 flex flex-col gap-3">
           <div className="flex items-center gap-3 text-lg font-semibold">
             <div className="flex items-center justify-center w-5 h-5">
               {React.isValidElement(p.icon)
@@ -335,7 +360,7 @@ function Header() {
     <header className="relative overflow-hidden">
       {/* Removed static gradient overlay */}
       <div className="max-w-6xl mx-auto px-4 py-10 md:py-14 relative">
-        <nav className="flex items-center justify-between">
+        <nav className="flex items-center justify-between gap-2 flex-wrap">
           <div className="flex items-center gap-2 font-extrabold">
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-cyan-300 to-violet-400 shadow-[0_0_0_6px_rgba(167,139,250,.18)]" />
             {PROFILE.name}
@@ -375,7 +400,7 @@ function Header() {
             <div className="text-xs uppercase tracking-[0.2em] text-white/60 font-semibold">
               Computer Science @ Santa Clara University
             </div>
-            <h1 className="text-3xl md:text-5xl font-black leading-tight mt-2">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black leading-tight mt-2">
               {PROFILE.tagline}
             </h1>
             <p className="text-white/70 mt-3 max-w-prose">{PROFILE.summary}</p>
@@ -413,7 +438,7 @@ function Header() {
             </div>
           </motion.div>
           <motion.div
-            className="md:col-span-5 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur"
+            className="md:col-span-5 bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
@@ -518,6 +543,7 @@ function rand(min, max) {
 function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const [hovering, setHovering] = React.useState(false);
+  const isMobile = useIsMobile();
 
   const makeTarget = React.useCallback(() => {
     const angle = rand(0, Math.PI * 2);
@@ -591,7 +617,7 @@ function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
             transition={{ duration: 0.12 }}
             className="absolute -top-2 left-2 z-20 pointer-events-none text-[11px] px-2 py-1 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur"
           >
-            Click to measure qubit
+            {isMobile ? 'Tap to measure qubit' : 'Click to measure qubit'}
           </motion.div>
         )}
       </div>
@@ -602,6 +628,8 @@ function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
 function QuantumGrid({ items }) {
   const [focused, setFocused] = React.useState(null);
   const [measured, setMeasured] = React.useState(false);
+  const isMobile = useIsMobile();
+  const prefersReduced = usePrefersReducedMotion();
 
   function buildSinePath(W, H, amp, phase, periods = 3, cy = H / 2) {
     const steps = 480;
@@ -616,7 +644,7 @@ function QuantumGrid({ items }) {
     return d;
   }
 
-  const waveCount = measured ? 1 : 28; // more waves to fill the section
+  const waveCount = prefersReduced ? (measured ? 1 : 8) : (measured ? 1 : (isMobile ? 14 : 28));
 
   return (
     <div className="relative [perspective:1200px]">
@@ -632,10 +660,10 @@ function QuantumGrid({ items }) {
         aria-hidden="true"
       >
         {Array.from({ length: waveCount }).map((_, i) => {
-          const H = 800;             // tall enough to cover the whole section
-          const W = 2400;            // >2x viewport width for seamless slide
+          const H = isMobile ? 560 : 800;   // shorter canvas on mobile
+          const W = 2400;                   // >2x viewport width for seamless slide
           const rowY = ((i + 1) / (waveCount + 1)) * H; // spread vertically across full height
-          const baseAmp = measured ? 40 : 28;          // stronger sine amplitude
+          const baseAmp = measured ? (isMobile ? 34 : 40) : (isMobile ? 22 : 28); // tune amplitude for mobile
           const ampJitter = measured ? 0 : (i % 5) * 1.5;
           const amp = baseAmp + ampJitter;
           const periods = measured ? 6 : 6;           // integer periods to ensure seamless tiling
@@ -651,11 +679,11 @@ function QuantumGrid({ items }) {
           ];
           const stroke = measured ? "rgba(167,139,250,.32)" : colorsIdle[i % colorsIdle.length];
           const strokeWidth = measured ? 2.4 : 1.2 + (i % 3) * 0.2;
-          const duration = measured ? 10 : 8 + (i % 7) * 0.6; // smooth varied speeds
+          const duration = prefersReduced ? 999 : (measured ? (isMobile ? 11 : 10) : (isMobile ? 9.5 : 8 + (i % 7) * 0.6));
           const delay = (i % 9) * 0.08;
 
           return (
-            <g key={i} style={{ animation: `waveShiftX ${duration}s linear infinite`, animationDelay: `${delay}s` }}>
+            <g key={i} style={ prefersReduced ? {} : { animation: `waveShiftX ${duration}s linear infinite`, animationDelay: `${delay}s` } }>
               <path d={d} fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="butt" />
               <path d={d} fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="butt" transform={`translate(${W}, 0)`} />
             </g>
@@ -663,7 +691,7 @@ function QuantumGrid({ items }) {
         })}
       </svg>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4 relative z-10">
         {items.map((p, i) => (
           <QuantumCard
             key={i}
