@@ -175,13 +175,7 @@ const PROJECTS = [
     links: [{ href: "https://github.com/MatthiasMasiero/F1-Website", label: "GitHub" }],
     icon: <Globe className="w-5 h-5" />,
   },
-  {
-    title: "Verbal Memory Game",
-    desc: "Lightweight Python CLI memory trainer with scoring loop.",
-    tags: ["Python", "CLI"],
-    links: [{ href: "https://github.com/MatthiasMasiero/Verbal-Memory-Game", label: "GitHub" }],
-    icon: <Sparkles className="w-5 h-5" />,
-  },
+
   {
     title: "Sports Science Internship (Coming Soon)",
     desc: "Machine learning-based analytics platform for injury prediction and load optimization in collegiate soccer. Full case study coming soon.",
@@ -193,25 +187,24 @@ const PROJECTS = [
 
 const QUANTUM = [
   {
-    title: "Qiskit 101 — Quantum Circuits",
-    desc: "Notebook series exploring qubits, superposition, measurement, and simple 1–2 qubit circuits in Qiskit (IBM Quantum).",
-    tags: ["Qiskit", "IBM Quantum", "Circuits"],
-    links: [],
-    icon: <Cpu className="w-5 h-5" />,
-  },
-  {
-    title: "Grover’s Algorithm Demo",
-    desc: "Implements amplitude amplification to search an unsorted database faster than classical methods; includes oracle design notes.",
-    tags: ["Qiskit", "Grover", "Amplitude Amplification"],
-    links: [],
+    title: "GHZ-Interference",
+    desc:
+      "Prepare a 4‑qubit GHZ state and sweep phase to visualize interference. Exports CSV and includes plot‑ready data.",
+    tags: ["Qiskit", "IBM Quantum", "GHZ"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/GHZ-Interference", label: "GitHub" },
+    ],
     icon: <Sparkles className="w-5 h-5" />,
   },
   {
-    title: "Quantum Teleportation (Simulation)",
-    desc: "End-to-end protocol simulation with Bell pair creation, classical channel, and state fidelity checks.",
-    tags: ["Qiskit", "Teleportation", "Simulation"],
-    links: [],
-    icon: <Globe className="w-5 h-5" />,
+    title: "GroverAlgorithmDemo",
+    desc:
+      "Classic Grover search demo (3‑qubit) showing oracle design and amplitude amplification with OpenQASM/Qiskit assets.",
+    tags: ["Grover", "Qiskit", "OpenQASM"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/GroverAlgorithmDemo", label: "GitHub" },
+    ],
+    icon: <Cpu className="w-5 h-5" />,
   },
 ];
 
@@ -293,8 +286,12 @@ function ProjectCard({ p }) {
     >
       <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] transition-colors h-full">
         <CardContent className="p-5 flex flex-col gap-3">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            {p.icon}
+          <div className="flex items-center gap-3 text-lg font-semibold">
+            <div className="flex items-center justify-center w-5 h-5">
+              {React.isValidElement(p.icon)
+                ? React.cloneElement(p.icon, { className: "w-5 h-5 text-white", strokeWidth: 2 })
+                : p.icon}
+            </div>
             <span>{p.title}</span>
           </div>
           <p className="text-white/70 text-sm">{p.desc}</p>
@@ -340,7 +337,16 @@ function Header() {
               </a>
             </Button>
             <Button variant="secondary" asChild>
-              <a href="#projects">Projects</a>
+              <a href="#projects">
+                <span className="mr-1 font-mono text-xs">&lt;/&gt;</span>
+                Projects
+              </a>
+            </Button>
+            <Button variant="secondary" asChild>
+              <a href="#quantum">
+                <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
+                Quantum
+              </a>
             </Button>
           </div>
         </nav>
@@ -378,7 +384,16 @@ function Header() {
                 </Button>
               )}
               <Button asChild variant="secondary">
-                <a href="#projects">See Projects</a>
+                <a href="#projects">
+                  <span className="mr-1 font-mono text-sm">&lt;/&gt;</span>
+                  See Projects
+                </a>
+              </Button>
+              <Button asChild variant="secondary">
+                <a href="#quantum">
+                  <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
+                  Quantum
+                </a>
               </Button>
             </div>
           </motion.div>
