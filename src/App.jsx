@@ -105,7 +105,7 @@ const PROFILE = {
   name: "Matthias Masiero",
   tagline: "I've had a lifelong passion for Computer Science so this is just the begining.",
   summary:
-    "CS @ Santa Clara University (’28). I build ML-powered tools, clean web apps, and serverless automation. Exploring quantum computing (IBM Q / Qiskit) and sports-science analytics.",
+    "I’m Matthias Masiero — a CS sophomore at Santa Clara who loves building clean, fast things: web apps, small automations, and ML tools. I’m exploring quantum (IBM Q / Qiskit) and building a sports-science project to help keep athletes healthy. When I’m not coding, I’m out in the sun playing soccer, surfing, or beach volleyball.",
   location: "Santa Clara, CA",
   email: "matthiasmasiero0@gmail.com",
   phone: "+1-908-432-5309",
@@ -518,43 +518,64 @@ function rand(min, max) {
 function QuantumCard({ p }) {
   const [collapsed, setCollapsed] = React.useState(false);
 
-  // seed per card so each floats a bit differently
-  const seed = React.useMemo(() => ({
-    rx: rand(-14, 14),
-    ry: rand(-18, 18),
-    rz: rand(-6, 6),
-    x: rand(-18, 18),
-    y: rand(-14, 14),
-    z: rand(-40, 40),
-    dur: rand(2.4, 3.8),
-  }), []);
+  const makeTarget = React.useCallback(() => {
+    const angle = rand(0, Math.PI * 2);
+    const rTilt = rand(7, 11);   // degrees (slightly larger tilt)
+    const rMove = rand(5, 9);    // px (slightly larger drift)
+    const rDepth = rand(-70, 70); // px in Z for in/out of screen
+    const rScale = rand(0.985, 1.03); // subtle size change
+    return {
+      rotateX: Math.sin(angle) * rTilt,
+      rotateY: Math.cos(angle) * rTilt,
+      rotateZ: rand(-4, 4),
+      x: Math.cos(angle) * rMove,
+      y: Math.sin(angle) * rMove,
+      z: rDepth,
+      scale: rScale,
+    };
+  }, []);
 
-  const variants = {
-    super: {
-      rotateX: [seed.rx - 2, seed.rx + 2],
-      rotateY: [seed.ry - 2, seed.ry + 2],
-      rotateZ: [seed.rz - 1, seed.rz + 1],
-      x: [seed.x - 2, seed.x + 2],
-      y: [seed.y - 2, seed.y + 2],
-      z: seed.z,
-      boxShadow: "0 0 80px rgba(167,139,250,.12)",
-      filter: "blur(2.25px)",
-      transition: { duration: seed.dur, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" },
-    },
-    measured: {
-      rotateX: 0, rotateY: 0, rotateZ: 0, x: 0, y: 0, z: 0,
-      boxShadow: "0 0 0 rgba(0,0,0,0)", filter: "blur(0px)",
-      transition: { type: "spring", stiffness: 140, damping: 16, mass: 0.8 },
-    },
+  const [pose, setPose] = React.useState(makeTarget);
+  const [dur, setDur] = React.useState(() => rand(1.3, 2.1));
+
+  // Continuously re-target to new points on the circle; do not return to center.
+  React.useEffect(() => {
+    if (collapsed) return; // stop re-targeting once measured by click
+    let timerId;
+    const loop = () => {
+      const nextDur = rand(1.3, 2.1);
+      setDur(nextDur);
+      setPose(makeTarget());
+      timerId = setTimeout(loop, nextDur * 1000);
+    };
+    timerId = setTimeout(loop, dur * 1000);
+    return () => clearTimeout(timerId);
+  }, [collapsed, dur, makeTarget]);
+
+  const measuredStyle = {
+    rotateX: 0,
+    rotateY: 0,
+    rotateZ: 0,
+    x: 0,
+    y: 0,
+    boxShadow: "0 0 0 rgba(0,0,0,0)",
+    filter: "blur(0px)",
+    transition: { type: "spring", stiffness: 170, damping: 18, mass: 0.7 },
+  };
+
+  // In superposition: always animate toward the latest pose with blur; no mid-way return.
+  const superAnim = {
+    ...pose, // includes rotateX/rotateY/rotateZ/x/y/z/scale
+    boxShadow: "0 0 90px rgba(167,139,250,.17)",
+    filter: "blur(2.25px)",
   };
 
   return (
     <motion.div
       style={{ transformStyle: "preserve-3d" }}
-      initial="super"
-      animate={collapsed ? "measured" : "super"}
-      whileHover="measured"
-      variants={variants}
+      animate={collapsed ? measuredStyle : superAnim}
+      transition={collapsed ? measuredStyle.transition : { duration: dur, ease: "easeInOut" }}
+      whileHover={measuredStyle}
       className="will-change-transform"
       onClick={() => setCollapsed(true)}
       title={collapsed ? "Measured" : "Click to measure"}
