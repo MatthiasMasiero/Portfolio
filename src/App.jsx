@@ -122,20 +122,25 @@ const SKILLS = {
     "Java",
     "C++",
     "Swift",
-    "HTML/CSS",
+    "HTML",
+    "CSS",
     "JavaScript",
-    "OCaml (basic)",
-    "Qiskit / OpenQASM (learning)",
+    "SQL",
+    "TypeScript",
+    "OCaml (partial knowledge)",
+    "Qiskit",
+    "OpenQASM (learning)",
   ],
   tools: [
-    "AWS (Lambda, Step Functions, EC2, S3, SageMaker, CloudWatch, API Gateway, Amplify)",
+    "AWS (Lambda, EC2, S3, SageMaker, CloudWatch, API Gateway, Amplify)",
     "Docker",
-    "CI/CD pipelines",
+    "CI/CD Pipelines",
     "TensorFlow",
     "Bash",
-    "Git & GitHub",
-    "GraphQL (learning)",
+    "Git",
+    "GraphQL",
     "IBM Quantum Platform",
+    "AI Agents (Amazon Q, LangChain, LlamaIndex, Auto-GPT, Claude)",
   ],
 };
 
@@ -376,13 +381,6 @@ function Header() {
               ))}
             </div>
             <div className="flex flex-wrap gap-2 mt-5">
-              {PROFILE.links.resume !== "#" && (
-                <Button asChild>
-                  <a href={PROFILE.links.resume} download target="_blank" rel="noreferrer">
-                    <Download className="w-4 h-4 mr-2" /> Resume
-                  </a>
-                </Button>
-              )}
               <Button asChild variant="secondary">
                 <a href="#projects">
                   <span className="mr-1 font-mono text-sm">&lt;/&gt;</span>
@@ -392,9 +390,16 @@ function Header() {
               <Button asChild variant="secondary">
                 <a href="#quantum">
                   <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
-                  Quantum
+                  See Quantum
                 </a>
               </Button>
+              {PROFILE.links.resume !== "#" && (
+                <Button asChild>
+                  <a href={PROFILE.links.resume} download target="_blank" rel="noreferrer">
+                    <Download className="w-4 h-4 mr-2" /> Resume
+                  </a>
+                </Button>
+              )}
             </div>
           </motion.div>
           <motion.div
