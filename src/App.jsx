@@ -38,6 +38,7 @@ function Button({ asChild = false, variant = "primary", className = "", children
   );
 }
 
+
 function AnimatedBackground() {
   return (
     <>
@@ -96,6 +97,10 @@ function AnimatedBackground() {
   );
 }
 
+function SmoothScrollStyles(){
+  return <style>{`html{scroll-behavior:smooth}`}</style>;
+}
+
 const PROFILE = {
   name: "Matthias Masiero",
   tagline: "I've had a lifelong passion for Computer Science so this is just the begining.",
@@ -117,20 +122,25 @@ const SKILLS = {
     "Java",
     "C++",
     "Swift",
-    "HTML/CSS",
+    "HTML",
+    "CSS",
     "JavaScript",
-    "OCaml (basic)",
-    "Qiskit / OpenQASM (learning)",
+    "SQL",
+    "TypeScript",
+    "OCaml (partial knowledge)",
+    "Qiskit",
+    "OpenQASM (learning)",
   ],
   tools: [
-    "AWS (Lambda, Step Functions, EC2, S3, SageMaker, CloudWatch, API Gateway, Amplify)",
+    "AWS (Lambda, EC2, S3, SageMaker, CloudWatch, API Gateway, Amplify)",
     "Docker",
-    "CI/CD pipelines",
+    "CI/CD Pipelines",
     "TensorFlow",
     "Bash",
-    "Git & GitHub",
-    "GraphQL (learning)",
+    "Git",
+    "GraphQL",
     "IBM Quantum Platform",
+    "AI Agents (Amazon Q, LangChain, LlamaIndex, Auto-GPT, Claude)",
   ],
 };
 
@@ -170,19 +180,46 @@ const PROJECTS = [
     links: [{ href: "https://github.com/MatthiasMasiero/F1-Website", label: "GitHub" }],
     icon: <Globe className="w-5 h-5" />,
   },
-  {
-    title: "Verbal Memory Game",
-    desc: "Lightweight Python CLI memory trainer with scoring loop.",
-    tags: ["Python", "CLI"],
-    links: [{ href: "https://github.com/MatthiasMasiero/Verbal-Memory-Game", label: "GitHub" }],
-    icon: <Sparkles className="w-5 h-5" />,
-  },
+
   {
     title: "Sports Science Internship (Coming Soon)",
     desc: "Machine learning-based analytics platform for injury prediction and load optimization in collegiate soccer. Full case study coming soon.",
     tags: ["Machine Learning", "Sports Analytics", "Python", "AWS"],
     links: [],
     icon: <Rocket className="w-5 h-5" />,
+  },
+  {
+    title: "This Website!",
+    desc:
+      "The code for my React + Vite + Tailwind portfolio with framer-motion animations, ambient background, and smooth-scrolling sections.",
+    tags: ["React", "Vite", "Tailwind", "Framer Motion"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/Portfolio", label: "GitHub" },
+    ],
+    icon: <Globe className="w-5 h-5" />,
+  },
+];
+
+const QUANTUM = [
+  {
+    title: "GHZ-Interference",
+    desc:
+      "Prepare a 4‑qubit GHZ state and sweep phase to visualize interference. Exports CSV and includes plot‑ready data.",
+    tags: ["Qiskit", "IBM Quantum", "GHZ"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/GHZ-Interference", label: "GitHub" },
+    ],
+    icon: <Sparkles className="w-5 h-5" />,
+  },
+  {
+    title: "GroverAlgorithmDemo",
+    desc:
+      "Classic Grover search demo (3‑qubit) showing oracle design and amplitude amplification with OpenQASM/Qiskit assets.",
+    tags: ["Grover", "Qiskit", "OpenQASM"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/GroverAlgorithmDemo", label: "GitHub" },
+    ],
+    icon: <Cpu className="w-5 h-5" />,
   },
 ];
 
@@ -264,8 +301,12 @@ function ProjectCard({ p }) {
     >
       <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] transition-colors h-full">
         <CardContent className="p-5 flex flex-col gap-3">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            {p.icon}
+          <div className="flex items-center gap-3 text-lg font-semibold">
+            <div className="flex items-center justify-center w-5 h-5">
+              {React.isValidElement(p.icon)
+                ? React.cloneElement(p.icon, { className: "w-5 h-5 text-white", strokeWidth: 2 })
+                : p.icon}
+            </div>
             <span>{p.title}</span>
           </div>
           <p className="text-white/70 text-sm">{p.desc}</p>
@@ -310,6 +351,18 @@ function Header() {
                 <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
               </a>
             </Button>
+            <Button variant="secondary" asChild>
+              <a href="#projects">
+                <span className="mr-1 font-mono text-xs">&lt;/&gt;</span>
+                Projects
+              </a>
+            </Button>
+            <Button variant="secondary" asChild>
+              <a href="#quantum">
+                <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
+                Quantum
+              </a>
+            </Button>
           </div>
         </nav>
         <div className="grid md:grid-cols-12 gap-5 mt-8">
@@ -338,6 +391,18 @@ function Header() {
               ))}
             </div>
             <div className="flex flex-wrap gap-2 mt-5">
+              <Button asChild variant="secondary">
+                <a href="#projects">
+                  <span className="mr-1 font-mono text-sm">&lt;/&gt;</span>
+                  See Projects
+                </a>
+              </Button>
+              <Button asChild variant="secondary">
+                <a href="#quantum">
+                  <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
+                  See Quantum
+                </a>
+              </Button>
               {PROFILE.links.resume !== "#" && (
                 <Button asChild>
                   <a href={PROFILE.links.resume} download target="_blank" rel="noreferrer">
@@ -345,9 +410,6 @@ function Header() {
                   </a>
                 </Button>
               )}
-              <Button asChild variant="secondary">
-                <a href="#projects">See Projects</a>
-              </Button>
             </div>
           </motion.div>
           <motion.div
@@ -450,6 +512,7 @@ function Education() {
 export default function App() {
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
+      <SmoothScrollStyles />
       <AnimatedBackground />
       <div className="relative z-20">
         <Header />
@@ -457,6 +520,14 @@ export default function App() {
         <Section id="projects" title="Selected Projects">
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
             {PROJECTS.map((p, i) => (
+              <ProjectCard p={p} key={i} />
+            ))}
+          </div>
+        </Section>
+
+        <Section id="quantum" title="Quantum">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {QUANTUM.map((p, i) => (
               <ProjectCard p={p} key={i} />
             ))}
           </div>
