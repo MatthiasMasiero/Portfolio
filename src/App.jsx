@@ -299,7 +299,7 @@ function ProjectCard({ p }) {
       viewport={{ once: true }}
       transition={{ duration: 0.35 }}
     >
-      <Card className="bg-white/5 border-white/10 hover:bg-white/[0.07] transition-colors h-full">
+      <Card className="bg-white/5 border-white/10 hover:bg-white/20 transition-colors h-full">
         <CardContent className="p-5 flex flex-col gap-3">
           <div className="flex items-center gap-3 text-lg font-semibold">
             <div className="flex items-center justify-center w-5 h-5">
@@ -515,7 +515,7 @@ function rand(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function QuantumCard({ p }) {
+function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
   const [collapsed, setCollapsed] = React.useState(false);
 
   const makeTarget = React.useCallback(() => {
@@ -577,8 +577,10 @@ function QuantumCard({ p }) {
       transition={collapsed ? measuredStyle.transition : { duration: dur, ease: "easeInOut" }}
       whileHover={measuredStyle}
       className="will-change-transform"
-      onClick={() => setCollapsed(true)}
+      onClick={() => { setCollapsed(true); onMeasure && onMeasure(index); }}
       title={collapsed ? "Measured" : "Click to measure"}
+      onMouseEnter={() => onHover && onHover()}
+      onMouseLeave={() => onLeave && onLeave()}
     >
       <ProjectCard p={p} />
     </motion.div>
@@ -586,15 +588,81 @@ function QuantumCard({ p }) {
 }
 
 function QuantumGrid({ items }) {
-  // Animated wave bridge SVG (if present)
-  // If you want to add the animated bridge, include it here
-  // Example:
-  // <svg ...><path strokeDasharray="none" ... /></svg>
+  const [focused, setFocused] = React.useState(null);
+  const [measured, setMeasured] = React.useState(false);
+
+  function buildSinePath(W, H, amp, phase, periods = 3, cy = H / 2) {
+    const steps = 480;
+    const twoPi = Math.PI * 2;
+    let d = "";
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const x = t * W;
+      const y = cy + amp * Math.sin(phase + t * periods * twoPi);
+      d += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
+    }
+    return d;
+  }
+
+  const waveCount = measured ? 1 : 28; // more waves to fill the section
+
   return (
-    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 [perspective:1200px]">
-      {items.map((p, i) => (
-        <QuantumCard key={i} p={p} />
-      ))}
+    <div className="relative [perspective:1200px]">
+      <style>{`
+        @keyframes waveShiftX { 0% { transform: translateX(0); } 100% { transform: translateX(-2400px); } }
+      `}</style>
+
+      {/* Full-section wave field (farther behind) */}
+      <svg
+        className="pointer-events-none absolute inset-0 -z-30 w-full h-full"
+        viewBox="0 0 2400 800"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {Array.from({ length: waveCount }).map((_, i) => {
+          const H = 800;             // tall enough to cover the whole section
+          const W = 2400;            // >2x viewport width for seamless slide
+          const rowY = ((i + 1) / (waveCount + 1)) * H; // spread vertically across full height
+          const baseAmp = measured ? 40 : 28;          // stronger sine amplitude
+          const ampJitter = measured ? 0 : (i % 5) * 1.5;
+          const amp = baseAmp + ampJitter;
+          const periods = measured ? 6 : 6;           // integer periods to ensure seamless tiling
+          const phase = (i * Math.PI) / 10;             // phase offset per line
+          const d = buildSinePath(W, H, amp, phase + (rowY / H) * Math.PI, periods, rowY);
+
+          const colorsIdle = [
+            "rgba(167,139,250,.18)",
+            "rgba(110,231,255,.16)",
+            "rgba(59,130,246,.14)",
+            "rgba(236,72,153,.12)",
+            "rgba(14,165,233,.12)",
+          ];
+          const stroke = measured ? "rgba(167,139,250,.32)" : colorsIdle[i % colorsIdle.length];
+          const strokeWidth = measured ? 2.4 : 1.2 + (i % 3) * 0.2;
+          const duration = measured ? 10 : 8 + (i % 7) * 0.6; // smooth varied speeds
+          const delay = (i % 9) * 0.08;
+
+          return (
+            <g key={i} style={{ animation: `waveShiftX ${duration}s linear infinite`, animationDelay: `${delay}s` }}>
+              <path d={d} fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="butt" />
+              <path d={d} fill="none" stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="butt" transform={`translate(${W}, 0)`} />
+            </g>
+          );
+        })}
+      </svg>
+
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 relative z-10">
+        {items.map((p, i) => (
+          <QuantumCard
+            key={i}
+            index={i}
+            p={p}
+            onHover={() => setFocused(i)}
+            onLeave={() => setFocused(null)}
+            onMeasure={() => setMeasured(true)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
