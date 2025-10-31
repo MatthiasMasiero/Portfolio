@@ -365,29 +365,31 @@ function Header() {
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-br from-cyan-300 to-violet-400 shadow-[0_0_0_6px_rgba(167,139,250,.18)]" />
             {PROFILE.name}
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="secondary" asChild>
-              <a href={PROFILE.links.github} target="_blank" rel="noreferrer">
-                <Github className="w-4 h-4 mr-2" /> GitHub
-              </a>
-            </Button>
-            <Button variant="secondary" asChild>
-              <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer">
-                <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
-              </a>
-            </Button>
-            <Button variant="secondary" asChild>
-              <a href="#projects">
-                <span className="mr-1 font-mono text-xs">&lt;/&gt;</span>
-                Projects
-              </a>
-            </Button>
-            <Button variant="secondary" asChild>
-              <a href="#quantum">
-                <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
-                Quantum
-              </a>
-            </Button>
+          <div className="relative max-w-full md:max-w-none">
+            <div className="flex items-center gap-2 overflow-x-auto md:overflow-visible no-scrollbar md:no-scrollbar:px-0 px-1 whitespace-nowrap md:whitespace-normal snap-x md:snap-none snap-mandatory">
+              <Button variant="secondary" asChild className="snap-start md:snap-none">
+                <a href={PROFILE.links.github} target="_blank" rel="noreferrer">
+                  <Github className="w-4 h-4 mr-2" /> GitHub
+                </a>
+              </Button>
+              <Button variant="secondary" asChild className="snap-start md:snap-none">
+                <a href={PROFILE.links.linkedin} target="_blank" rel="noreferrer">
+                  <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
+                </a>
+              </Button>
+              <Button variant="secondary" asChild className="snap-start md:snap-none">
+                <a href="#projects">
+                  <span className="mr-1 font-mono text-xs">&lt;/&gt;</span>
+                  Projects
+                </a>
+              </Button>
+              <Button variant="secondary" asChild className="snap-start md:snap-none">
+                <a href="#quantum">
+                  <span className="mr-1 text-xs leading-none align-middle">|ψ⟩</span>
+                  Quantum
+                </a>
+              </Button>
+            </div>
           </div>
         </nav>
         <div className="grid md:grid-cols-12 gap-5 mt-8">
