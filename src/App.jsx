@@ -517,6 +517,7 @@ function rand(min, max) {
 
 function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
   const [collapsed, setCollapsed] = React.useState(false);
+  const [hovering, setHovering] = React.useState(false);
 
   const makeTarget = React.useCallback(() => {
     const angle = rand(0, Math.PI * 2);
@@ -578,11 +579,22 @@ function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
       whileHover={measuredStyle}
       className="will-change-transform"
       onClick={() => { setCollapsed(true); onMeasure && onMeasure(index); }}
-      title={collapsed ? "Measured" : "Click to measure"}
-      onMouseEnter={() => onHover && onHover()}
-      onMouseLeave={() => onLeave && onLeave()}
+      onMouseEnter={() => { setHovering(true); onHover && onHover(); }}
+      onMouseLeave={() => { setHovering(false); onLeave && onLeave(); }}
     >
-      <ProjectCard p={p} />
+      <div className="relative">
+        <ProjectCard p={p} />
+        {!collapsed && hovering && (
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.12 }}
+            className="absolute -top-2 left-2 z-20 pointer-events-none text-[11px] px-2 py-1 rounded-md bg-black/70 border border-white/10 shadow-lg backdrop-blur"
+          >
+            Click to measure qubit
+          </motion.div>
+        )}
+      </div>
     </motion.div>
   );
 }
