@@ -491,6 +491,7 @@ function Experience() {
   );
 }
 
+
 function Education() {
   return (
     <div className="grid md:grid-cols-2 gap-4">
@@ -509,6 +510,75 @@ function Education() {
   );
 }
 
+// --- Quantum superposition cards -------------------------------------------
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function QuantumCard({ p }) {
+  const [collapsed, setCollapsed] = React.useState(false);
+
+  // seed per card so each floats a bit differently
+  const seed = React.useMemo(() => ({
+    rx: rand(-14, 14),
+    ry: rand(-18, 18),
+    rz: rand(-6, 6),
+    x: rand(-18, 18),
+    y: rand(-14, 14),
+    z: rand(-40, 40),
+    dur: rand(2.4, 3.8),
+  }), []);
+
+  const variants = {
+    super: {
+      rotateX: [seed.rx - 2, seed.rx + 2],
+      rotateY: [seed.ry - 2, seed.ry + 2],
+      rotateZ: [seed.rz - 1, seed.rz + 1],
+      x: [seed.x - 2, seed.x + 2],
+      y: [seed.y - 2, seed.y + 2],
+      z: seed.z,
+      boxShadow: "0 0 80px rgba(167,139,250,.12)",
+      filter: "blur(2.25px)",
+      transition: { duration: seed.dur, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" },
+    },
+    measured: {
+      rotateX: 0, rotateY: 0, rotateZ: 0, x: 0, y: 0, z: 0,
+      boxShadow: "0 0 0 rgba(0,0,0,0)", filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 140, damping: 16, mass: 0.8 },
+    },
+  };
+
+  return (
+    <motion.div
+      style={{ transformStyle: "preserve-3d" }}
+      initial="super"
+      animate={collapsed ? "measured" : "super"}
+      whileHover="measured"
+      variants={variants}
+      className="will-change-transform"
+      onClick={() => setCollapsed(true)}
+      title={collapsed ? "Measured" : "Click to measure"}
+    >
+      <ProjectCard p={p} />
+    </motion.div>
+  );
+}
+
+function QuantumGrid({ items }) {
+  // Animated wave bridge SVG (if present)
+  // If you want to add the animated bridge, include it here
+  // Example:
+  // <svg ...><path strokeDasharray="none" ... /></svg>
+  return (
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4 [perspective:1200px]">
+      {items.map((p, i) => (
+        <QuantumCard key={i} p={p} />
+      ))}
+    </div>
+  );
+}
+// ---------------------------------------------------------------------------
+
 export default function App() {
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
@@ -526,11 +596,7 @@ export default function App() {
         </Section>
 
         <Section id="quantum" title="Quantum">
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {QUANTUM.map((p, i) => (
-              <ProjectCard p={p} key={i} />
-            ))}
-          </div>
+          <QuantumGrid items={QUANTUM} />
         </Section>
 
         <Section id="skills" title="Skills">
