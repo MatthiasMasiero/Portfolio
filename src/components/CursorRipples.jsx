@@ -118,7 +118,8 @@ export function CursorRipples() {
                 animation: "ripple 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards",
                 mixBlendMode: "screen",
                 willChange: "transform, opacity",
-                transform: "translate(-50%, -50%)",
+                transform: "translate(-50%, -50%) scale(0)",
+                opacity: 0.5,
               }}
             />
           );
@@ -145,7 +146,8 @@ export function CursorRipples() {
                 animation: "rippleSecondary 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards",
                 mixBlendMode: "overlay",
                 willChange: "transform, opacity",
-                transform: "translate(-50%, -50%)",
+                transform: "translate(-50%, -50%) scale(0)",
+                opacity: 0.4,
                 animationDelay: "0.1s",
               }}
             />
