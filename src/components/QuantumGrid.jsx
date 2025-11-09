@@ -16,11 +16,26 @@ function buildSinePath(W, H, amp, phase, periods = 3, cy = H / 2) {
   return d;
 }
 
-export function QuantumGrid({ items, effectsEnabled = true }) {
+export function QuantumGrid({ items, effectsEnabled = true, onMeasuredChange, onReset }) {
   const [focused, setFocused] = React.useState(null);
   const [measured, setMeasured] = React.useState(false);
+  const [resetTrigger, setResetTrigger] = React.useState(0);
   const isMobile = useIsMobile();
   const prefersReduced = usePrefersReducedMotion();
+
+  React.useEffect(() => {
+    if (onReset) {
+      setMeasured(false);
+      setResetTrigger((prev) => prev + 1);
+    }
+  }, [onReset]);
+
+  const handleMeasure = () => {
+    setMeasured(true);
+    if (onMeasuredChange) {
+      onMeasuredChange(true);
+    }
+  };
 
   const waveCount = prefersReduced
     ? measured
@@ -123,7 +138,8 @@ export function QuantumGrid({ items, effectsEnabled = true }) {
             p={p}
             onHover={() => setFocused(i)}
             onLeave={() => setFocused(null)}
-            onMeasure={() => setMeasured(true)}
+            onMeasure={handleMeasure}
+            resetTrigger={resetTrigger}
             effectsEnabled={effectsEnabled}
           />
         ))}

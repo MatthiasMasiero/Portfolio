@@ -18,6 +18,13 @@ export default function App() {
   const [clickEffectsEnabled, setClickEffectsEnabled] = useState(true);
   const [quantumEffectsEnabled, setQuantumEffectsEnabled] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [quantumMeasured, setQuantumMeasured] = useState(false);
+  const [resetCounter, setResetCounter] = useState(0);
+
+  const handleQuantumReset = () => {
+    setQuantumMeasured(false);
+    setResetCounter((prev) => prev + 1);
+  };
 
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
@@ -99,9 +106,29 @@ export default function App() {
           </div>
         </Section>
 
-        <Section id="quantum" title="Quantum">
-          <QuantumGrid items={QUANTUM} effectsEnabled={quantumEffectsEnabled} />
-        </Section>
+        <section id="quantum" className="max-w-6xl mx-auto px-4 py-10 md:py-14">
+          <div className="flex items-center gap-4 flex-wrap">
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              Quantum
+            </h2>
+            {quantumMeasured && (
+              <button
+                onClick={handleQuantumReset}
+                className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-400/30 rounded-lg text-purple-200 text-sm font-medium hover:from-purple-500/30 hover:to-blue-500/30 hover:border-purple-400/50 transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
+              >
+                Enter Superposition
+              </button>
+            )}
+          </div>
+          <div className="mt-6">
+            <QuantumGrid
+              items={QUANTUM}
+              effectsEnabled={quantumEffectsEnabled}
+              onMeasuredChange={setQuantumMeasured}
+              onReset={resetCounter}
+            />
+          </div>
+        </section>
 
         <Section id="skills" title="Skills">
           <Skills />
