@@ -1,5 +1,6 @@
 import { PROFILE, PROJECTS, QUANTUM } from "./constants/data";
 import { AnimatedBackground } from "./components/AnimatedBackground";
+import { CursorRipples } from "./components/CursorRipples";
 import { SmoothScrollStyles } from "./components/SmoothScrollStyles";
 import { Header } from "./components/Header";
 import { Section } from "./components/ui/Section";
@@ -14,6 +15,7 @@ export default function App() {
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
       <SmoothScrollStyles />
       <AnimatedBackground />
+      <CursorRipples />
       <div className="relative z-20">
         <Header />
 
