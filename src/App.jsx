@@ -34,7 +34,7 @@ export default function App() {
           onMouseLeave={() => setDropdownOpen(false)}
         >
           <button className="px-4 py-2 text-sm font-medium bg-white/10 hover:bg-white/15 rounded-lg backdrop-blur-md border border-white/20 transition-colors flex items-center gap-2">
-            Disable Features
+            Toggle Features
             <ChevronDown className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
