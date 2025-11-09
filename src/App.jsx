@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { PROFILE, PROJECTS, QUANTUM } from "./constants/data";
 import { AnimatedBackground } from "./components/AnimatedBackground";
 import { CursorRipples } from "./components/CursorRipples";
+import { ClickRipple } from "./components/ClickRipple";
 import { SmoothScrollStyles } from "./components/SmoothScrollStyles";
 import { Header } from "./components/Header";
 import { Section } from "./components/ui/Section";
@@ -13,21 +15,63 @@ import { Education } from "./components/Education";
 
 export default function App() {
   const [cursorEffectsEnabled, setCursorEffectsEnabled] = useState(true);
-
-  const toggleCursorEffects = () => setCursorEffectsEnabled(!cursorEffectsEnabled);
+  const [clickEffectsEnabled, setClickEffectsEnabled] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
       <SmoothScrollStyles />
       <AnimatedBackground />
       {cursorEffectsEnabled && <CursorRipples />}
+      <ClickRipple enabled={clickEffectsEnabled} />
       <div className="relative z-20">
-        <button
-          onClick={toggleCursorEffects}
-          className="fixed top-4 right-4 z-30 px-3 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-md backdrop-blur-md"
+        {/* Dropdown Menu */}
+        <div
+          className="fixed top-4 right-4 z-50"
+          onMouseEnter={() => setDropdownOpen(true)}
+          onMouseLeave={() => setDropdownOpen(false)}
         >
-          {cursorEffectsEnabled ? "Disable Cursor Effects" : "Enable Cursor Effects"}
-        </button>
+          <button className="px-4 py-2 text-sm font-medium bg-white/10 hover:bg-white/15 rounded-lg backdrop-blur-md border border-white/20 transition-colors flex items-center gap-2">
+            Disable Features
+            <ChevronDown className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute top-full right-0 pt-2 w-56">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg overflow-hidden shadow-xl">
+              {/* Cursor Effects Toggle */}
+              <div
+                onClick={() => setCursorEffectsEnabled(!cursorEffectsEnabled)}
+                className="px-4 py-3 hover:bg-white/10 cursor-pointer transition-colors flex items-center justify-between"
+              >
+                <span className="text-sm font-medium">Cursor Effects</span>
+                <div
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    cursorEffectsEnabled
+                      ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                      : "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                  }`}
+                />
+              </div>
+
+              {/* Click Effects Toggle */}
+              <div
+                onClick={() => setClickEffectsEnabled(!clickEffectsEnabled)}
+                className="px-4 py-3 hover:bg-white/10 cursor-pointer transition-colors flex items-center justify-between border-t border-white/10"
+              >
+                <span className="text-sm font-medium">Click Effects</span>
+                <div
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    clickEffectsEnabled
+                      ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                      : "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                  }`}
+                />
+              </div>
+              </div>
+            </div>
+          )}
+        </div>
         <Header />
 
         <Section id="projects" title="Selected Projects">
