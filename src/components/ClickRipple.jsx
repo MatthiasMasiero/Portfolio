@@ -7,18 +7,26 @@ export function ClickRipple({ enabled = true }) {
     if (!enabled) return;
 
     const handleClick = (e) => {
-      // Ignore clicks on interactive elements
+      // Ignore clicks on interactive elements and quantum cards
       const target = e.target;
       const isInteractive =
         target.closest('button') ||
         target.closest('a') ||
         target.closest('input') ||
         target.closest('textarea') ||
-        target.closest('select') ||
-        target.closest('[class*="cursor-pointer"]') ||
-        target.closest('[onclick]');
+        target.closest('select');
 
-      if (isInteractive) return;
+      // Ignore clicks on the dropdown menu
+      const isOnDropdown = target.closest('[data-dropdown-menu]');
+
+      // Ignore clicks on quantum project cards (but allow clicks on empty space in quantum section)
+      const quantumSection = target.closest('#quantum');
+      const isOnQuantumCard = quantumSection && (
+        target.closest('[class*="Card"]') ||
+        target.closest('[class*="rounded-2xl"]')
+      );
+
+      if (isInteractive || isOnDropdown || isOnQuantumCard) return;
 
       const clickX = e.clientX;
       const clickY = e.clientY;
@@ -58,7 +66,12 @@ export function ClickRipple({ enabled = true }) {
       'a:not([class*="fixed"])',
       'img',
       '[class*="Card"]',
-      '[class*="Chip"]'
+      '[class*="Chip"]',
+      'div.font-semibold',
+      'div.text-xs',
+      'div.text-sm',
+      'ul',
+      'li'
     ];
 
     const elements = document.querySelectorAll(selectors.join(', '));

@@ -7,7 +7,7 @@ function rand(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-export function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
+export function QuantumCard({ p, index, onHover, onLeave, onMeasure, effectsEnabled = true }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const [hovering, setHovering] = React.useState(false);
   const isMobile = useIsMobile();
@@ -33,7 +33,7 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
   const [dur, setDur] = React.useState(() => rand(1.3, 2.1));
 
   React.useEffect(() => {
-    if (collapsed) return;
+    if (collapsed || !effectsEnabled) return;
     let timerId;
     const loop = () => {
       const nextDur = rand(1.3, 2.1);
@@ -43,7 +43,7 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
     };
     timerId = setTimeout(loop, dur * 1000);
     return () => clearTimeout(timerId);
-  }, [collapsed, dur, makeTarget]);
+  }, [collapsed, dur, makeTarget, effectsEnabled]);
 
   const measuredStyle = {
     rotateX: 0,
@@ -65,9 +65,9 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
   return (
     <motion.div
       style={{ transformStyle: "preserve-3d" }}
-      animate={collapsed ? measuredStyle : superAnim}
+      animate={collapsed || !effectsEnabled ? measuredStyle : superAnim}
       transition={
-        collapsed
+        collapsed || !effectsEnabled
           ? measuredStyle.transition
           : { duration: dur, ease: "easeInOut" }
       }
@@ -88,7 +88,7 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure }) {
     >
       <div className="relative">
         <ProjectCard p={p} />
-        {!collapsed && hovering && (
+        {!collapsed && hovering && effectsEnabled && (
           <motion.div
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}

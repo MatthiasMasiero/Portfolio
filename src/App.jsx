@@ -16,6 +16,7 @@ import { Education } from "./components/Education";
 export default function App() {
   const [cursorEffectsEnabled, setCursorEffectsEnabled] = useState(true);
   const [clickEffectsEnabled, setClickEffectsEnabled] = useState(true);
+  const [quantumEffectsEnabled, setQuantumEffectsEnabled] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -28,6 +29,7 @@ export default function App() {
         {/* Dropdown Menu */}
         <div
           className="fixed top-4 right-4 z-50"
+          data-dropdown-menu
           onMouseEnter={() => setDropdownOpen(true)}
           onMouseLeave={() => setDropdownOpen(false)}
         >
@@ -68,6 +70,21 @@ export default function App() {
                   }`}
                 />
               </div>
+
+              {/* Quantum Effects Toggle */}
+              <div
+                onClick={() => setQuantumEffectsEnabled(!quantumEffectsEnabled)}
+                className="px-4 py-3 hover:bg-white/10 cursor-pointer transition-colors flex items-center justify-between border-t border-white/10"
+              >
+                <span className="text-sm font-medium">Quantum Effects</span>
+                <div
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    quantumEffectsEnabled
+                      ? "bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                      : "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"
+                  }`}
+                />
+              </div>
               </div>
             </div>
           )}
@@ -83,7 +100,7 @@ export default function App() {
         </Section>
 
         <Section id="quantum" title="Quantum">
-          <QuantumGrid items={QUANTUM} />
+          <QuantumGrid items={QUANTUM} effectsEnabled={quantumEffectsEnabled} />
         </Section>
 
         <Section id="skills" title="Skills">
