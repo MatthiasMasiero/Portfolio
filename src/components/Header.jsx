@@ -93,6 +93,25 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
           >
+            <div className="flex flex-col items-center mb-5">
+              <img
+                src="/Headshot.jpg"
+                alt={PROFILE.name}
+                className="w-44 h-44 md:w-52 md:h-52 rounded-full object-cover object-[center_top] border-2 border-white/20 shadow-lg mb-4"
+                style={{ objectPosition: "center 30%" }}
+              />
+              <div className="text-center">
+                <div className="font-semibold text-base md:text-lg text-white mb-1">
+                  {PROFILE.name}
+                </div>
+                <div className="text-xs md:text-sm text-white/60">
+                  Computer Science Student
+                </div>
+                <div className="text-xs text-white/50 mt-1">
+                  {PROFILE.location}
+                </div>
+              </div>
+            </div>
             <div className="text-sm font-semibold mb-2">Quick Contacts</div>
             <div className="space-y-2 text-sm text-white/80">
               <a className="flex items-center gap-2" href={`mailto:${PROFILE.email}`}>
