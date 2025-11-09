@@ -1,6 +1,6 @@
 export const PROFILE = {
   name: "Matthias Masiero",
-  tagline: "I've had a lifelong passion for Computer Science so this is just the begining.",
+  tagline: "I've had a lifelong passion for Computer Science, and this is just the beginning.",
   summary:
     "I'm Matthias Masiero — a CS sophomore at Santa Clara who loves building clean, fast things: web apps, small automations, and ML tools. I'm exploring quantum (IBM Q / Qiskit) and building a sports-science project to help keep athletes healthy. When I'm not coding, I'm out in the sun playing soccer, surfing, or beach volleyball.",
   location: "Santa Clara, CA",
