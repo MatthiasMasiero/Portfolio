@@ -7,10 +7,16 @@ function rand(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-export function QuantumCard({ p, index, onHover, onLeave, onMeasure, effectsEnabled = true }) {
+export function QuantumCard({ p, index, onHover, onLeave, onMeasure, resetTrigger, effectsEnabled = true }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const [hovering, setHovering] = React.useState(false);
   const isMobile = useIsMobile();
+
+  React.useEffect(() => {
+    if (resetTrigger > 0) {
+      setCollapsed(false);
+    }
+  }, [resetTrigger]);
 
   const makeTarget = React.useCallback(() => {
     const angle = rand(0, Math.PI * 2);
