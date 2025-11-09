@@ -14,22 +14,20 @@ import { Education } from "./components/Education";
 export default function App() {
   const [cursorEffectsEnabled, setCursorEffectsEnabled] = useState(true);
 
+  const toggleCursorEffects = () => setCursorEffectsEnabled(!cursorEffectsEnabled);
+
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
       <SmoothScrollStyles />
       <AnimatedBackground />
-      <CursorRipples enabled={cursorEffectsEnabled} />
-
-      {/* Cursor Effects Toggle Button */}
-      <button
-        onClick={() => setCursorEffectsEnabled(!cursorEffectsEnabled)}
-        className="fixed top-4 right-4 z-50 px-3 py-2 text-xs font-medium text-white/80 bg-white/10 border border-white/20 rounded-lg backdrop-blur-sm hover:bg-white/15 transition-colors"
-        title={cursorEffectsEnabled ? "Disable cursor effects" : "Enable cursor effects"}
-      >
-        {cursorEffectsEnabled ? "Disable Cursor Effects" : "Enable Cursor Effects"}
-      </button>
-
+      {cursorEffectsEnabled && <CursorRipples />}
       <div className="relative z-20">
+        <button
+          onClick={toggleCursorEffects}
+          className="fixed top-4 right-4 z-30 px-3 py-2 text-sm bg-white/10 hover:bg-white/20 rounded-md backdrop-blur-md"
+        >
+          {cursorEffectsEnabled ? "Disable Cursor Effects" : "Enable Cursor Effects"}
+        </button>
         <Header />
 
         <Section id="projects" title="Selected Projects">
