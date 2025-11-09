@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
-export function CursorRipples() {
+export function CursorRipples({ enabled = true }) {
   const [ripples, setRipples] = useState([]);
-  
+
   const lastPos = useRef({ x: 0, y: 0 });
   const lastTime = useRef(Date.now());
   const lastRippleTime = useRef(0);
@@ -12,13 +12,13 @@ export function CursorRipples() {
       const now = Date.now();
       const newPos = { x: e.clientX, y: e.clientY };
       const deltaTime = now - lastTime.current;
-      
+
       // Calculate velocity
       const dx = newPos.x - lastPos.current.x;
       const dy = newPos.y - lastPos.current.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       const newVelocity = deltaTime > 0 ? (distance / deltaTime) * 1000 : 0;
-      
+
       // Create ripples at intervals - more frequent like before
       const baseInterval = 180;
       const minInterval = 120;
@@ -26,7 +26,7 @@ export function CursorRipples() {
       const easeOutFactor = 1 - Math.pow(1 - velocityFactor, 2);
       const dynamicInterval = baseInterval - (easeOutFactor * (baseInterval - minInterval));
       const rippleInterval = Math.max(Math.min(dynamicInterval, 350), minInterval);
-      
+
       if (now - lastRippleTime.current > rippleInterval) {
         const rippleId = Math.random();
         const newRipple = {
@@ -36,35 +36,43 @@ export function CursorRipples() {
           timestamp: now,
           velocity: newVelocity,
         };
-        
+
         setRipples((prev) => {
           // Keep more ripples for smoother effect
           const maxRipples = newVelocity > 200 ? 6 : 5;
           const updated = [...prev.slice(-maxRipples), newRipple];
           return updated;
         });
-        
+
         lastRippleTime.current = now;
-        
+
         // Remove ripple after animation
         setTimeout(() => {
           setRipples((prev) => prev.filter((r) => r.id !== rippleId));
         }, 2200);
       }
-      
+
       lastPos.current = newPos;
       lastTime.current = now;
     };
 
-    // Only enable on non-touch devices (desktop)
-    if (typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
+    // Only enable on non-touch devices (desktop) and if enabled prop is true
+    if (enabled && typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
       window.addEventListener("mousemove", handleMouseMove, { passive: true });
-      
+
       return () => {
         window.removeEventListener("mousemove", handleMouseMove);
       };
+    } else {
+      // Clear ripples when disabled
+      setRipples([]);
     }
-  }, []);
+  }, [enabled]);
+
+  // Don't render anything if disabled
+  if (!enabled) {
+    return null;
+  }
 
   return (
     <>

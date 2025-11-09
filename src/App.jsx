@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PROFILE, PROJECTS, QUANTUM } from "./constants/data";
 import { AnimatedBackground } from "./components/AnimatedBackground";
 import { CursorRipples } from "./components/CursorRipples";
@@ -11,11 +12,23 @@ import { Experience } from "./components/Experience";
 import { Education } from "./components/Education";
 
 export default function App() {
+  const [cursorEffectsEnabled, setCursorEffectsEnabled] = useState(true);
+
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
       <SmoothScrollStyles />
       <AnimatedBackground />
-      <CursorRipples />
+      <CursorRipples enabled={cursorEffectsEnabled} />
+
+      {/* Cursor Effects Toggle Button */}
+      <button
+        onClick={() => setCursorEffectsEnabled(!cursorEffectsEnabled)}
+        className="fixed top-4 right-4 z-50 px-3 py-2 text-xs font-medium text-white/80 bg-white/10 border border-white/20 rounded-lg backdrop-blur-sm hover:bg-white/15 transition-colors"
+        title={cursorEffectsEnabled ? "Disable cursor effects" : "Enable cursor effects"}
+      >
+        {cursorEffectsEnabled ? "Disable Cursor Effects" : "Enable Cursor Effects"}
+      </button>
+
       <div className="relative z-20">
         <Header />
 
