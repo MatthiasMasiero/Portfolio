@@ -71,10 +71,13 @@ export const PROJECTS = [
     icon: "Star",
   },
   {
-    title: "F1‑Website",
-    desc: "Responsive storefront concept with product cards and modern layout.",
-    tags: ["HTML", "CSS", "UI"],
-    links: [{ href: "https://github.com/MatthiasMasiero/F1-Website", label: "GitHub" }],
+    title: "CardTempo — Credit Optimizer",
+    desc: "Smart financial tool that boosts credit scores by 15-160 points through optimized payment timing. Features multi-card optimization, payment calendars, email reminders, what-if scenarios, and personalized card recommendations with application timelines.",
+    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
+    links: [
+      { href: "https://www.cardtempo.com/", label: "Website" },
+      { href: "https://github.com/MatthiasMasiero/CardTempo", label: "GitHub" },
+    ],
     icon: "Globe",
   },
   {
