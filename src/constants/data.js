@@ -53,22 +53,14 @@ export const PROJECTS = [
     icon: "Rocket",
   },
   {
-    title: "Automated Heat‑Sensing Drone (Senior Design)",
+    title: "High-Performance Order Matching Engine",
     desc:
-      "Team project building a drone system that detects & classifies heat signatures using on‑board vision and thermal‑image processing. Built navigation and CV pipeline prototypes.",
-    tags: ["Computer Vision", "Robotics"],
-    links: [],
-    icon: "Cpu",
-  },
-  {
-    title: "Reward Points Management System",
-    desc:
-      "Web app + SQLite/Flask backend to track & visualize student reward data; collaborated with teacher on UX and feature set; actively used in classes.",
-    tags: ["Flask", "SQLite", "Data Viz"],
+      "C++17 order matching engine processing 300,000+ orders/second with sub-4μs latency. Supports LIMIT, MARKET, and STOP orders using price-time priority matching. Features lock-free architecture, zero data loss under extreme load, and production-ready error handling.",
+    tags: ["C++", "Low Latency", "Trading Systems", "Performance"],
     links: [
-      { href: "https://github.com/MatthiasMasiero/CompSci-RP-Website", label: "Repo (frontend)" },
+      { href: "https://github.com/MatthiasMasiero/MatchingEngine", label: "GitHub" },
     ],
-    icon: "Star",
+    icon: "Cpu",
   },
   {
     title: "CardTempo — Credit Optimizer",
@@ -79,6 +71,16 @@ export const PROJECTS = [
       { href: "https://github.com/MatthiasMasiero/CardTempo", label: "GitHub" },
     ],
     icon: "Globe",
+  },
+  {
+    title: "Reward Points Management System",
+    desc:
+      "Web app + SQLite/Flask backend to track & visualize student reward data; collaborated with teacher on UX and feature set; actively used in classes.",
+    tags: ["Flask", "SQLite", "Data Viz"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/CompSci-RP-Website", label: "Repo (frontend)" },
+    ],
+    icon: "Star",
   },
   {
     title: "Sports Science Internship (Coming Soon)",
@@ -124,19 +126,28 @@ export const QUANTUM = [
 
 export const EXPERIENCE = [
   {
-    org: "Sports Science Internship, SCU Athletic Program",
-    when: "Present",
+    org: "Sports Science Internship, Santa Clara University Athletics",
+    when: "Jan 2025 - Present",
     bullets: [
-      "Designing ML model on Catapult tracking data to predict non‑contact injuries.",
-      "Feature extraction, regression/classification; optimize training loads with staff.",
-      "Goal: reduce non‑contact injury risk by up to 70%.",
+      "Processing 750K+ biometric data points per session across 22 athletes at 10Hz sampling frequency from Catapult GPS/accelerometer wearables to predict and prevent non‑contact injuries.",
+      "Engineering feature-extraction pipelines and applying regression and classification algorithms to optimize training loads.",
+      "Collaborating with trainers and data scientists to refine predictive models for injury prevention and recovery, targeting a 70% reduction in non‑contact injuries.",
     ],
   },
   {
-    org: "ACM Club — Board Member",
-    when: "Present",
+    org: "Machine Learning Researcher, Santa Clara University",
+    when: "Nov 2025 - Present",
     bullets: [
-      "Help lead the largest CS club on campus; organize weekly events and hackathons.",
+      "Benchmarked 6 transformer models (BERT, RoBERTa, MentalRoBERTa, ELECTRA, LLaMA-3.2) for suicidal ideation detection across 5 Reddit and Twitter datasets, achieving up to 98% accuracy on binary classification tasks.",
+      "Designed a 40 sample adversarial test set spanning implicit ideation, sarcasm, and ambiguous distress to stress test model robustness, exposing failure modes where surface level lexical cues proved insufficient.",
+    ],
+  },
+  {
+    org: "ACM Event Coordinator, Santa Clara University",
+    when: "Oct 2024 - Present",
+    bullets: [
+      "Board member of the largest computer science club on campus; lead AI and quantum computing workshops teaching machine learning fundamentals and Qiskit implementations.",
+      "Plan and run two major hackathons each year, with over 350 participants and multiple guest speakers.",
     ],
   },
   {
@@ -147,20 +158,13 @@ export const EXPERIENCE = [
       "Led the proposal and successfully obtained Board of Education approval for two advanced computing courses.",
     ],
   },
-  {
-    org: "BrainSTEM — Instructor",
-    when: "Previously",
-    bullets: [
-      "Taught robotics & CS to middle school students; designed hands‑on activities.",
-    ],
-  },
 ];
 
 export const EDUCATION = [
   {
     school: "Santa Clara University",
     degree: "B.S. in Computer Science, Minor in Physics",
-    year: "2028",
+    year: "Sophomore",
   },
 ];
 
