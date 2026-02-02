@@ -32,7 +32,7 @@ export function Education() {
               <GraduationCap className="w-4 h-4" /> {ed.school}
             </div>
             <div className="text-sm text-white/70">{ed.degree}</div>
-            <div className="text-xs text-white/60">Class of {ed.year}</div>
+            <div className="text-xs text-white/60">{ed.year}</div>
           </CardContent>
         </Card>
       ))}
