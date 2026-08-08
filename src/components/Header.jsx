@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Download, Mail, Phone } from "lucide-react";
+import { Github, Linkedin, Download, Mail } from "lucide-react";
 import { PROFILE } from "../constants/data";
 import { Button } from "./ui/Button";
 import { Chip } from "./ui/Chip";
@@ -116,9 +116,6 @@ export function Header() {
             <div className="space-y-2 text-sm text-white/80">
               <a className="flex items-center gap-2" href={`mailto:${PROFILE.email}`}>
                 <Mail className="w-4 h-4" /> {PROFILE.email}
-              </a>
-              <a className="flex items-center gap-2" href={`tel:${PROFILE.phone}`}>
-                <Phone className="w-4 h-4" /> {PROFILE.phone}
               </a>
               <a className="flex items-center gap-2" href={PROFILE.links.linkedin} target="_blank" rel="noreferrer">
                 <Linkedin className="w-4 h-4" /> LinkedIn
