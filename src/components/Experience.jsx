@@ -23,7 +23,7 @@ export function Experience() {
       {EXPERIENCE.map((e, idx) => (
         <Card
           key={idx}
-          className="bg-white/5 border-white/10 cursor-pointer hover:bg-white/[0.07] transition-colors"
+          className="cursor-pointer"
           onClick={handleCardClick}
         >
           <CardContent className="p-5">
