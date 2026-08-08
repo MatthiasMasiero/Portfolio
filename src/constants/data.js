@@ -2,10 +2,9 @@ export const PROFILE = {
   name: "Matthias Masiero",
   tagline: "I've had a lifelong passion for Computer Science, and this is just the beginning.",
   summary:
-    "I'm Matthias Masiero — a CS sophomore at Santa Clara who loves building clean, fast things: web apps, small automations, and ML tools. I'm exploring quantum (IBM Q / Qiskit) and building a sports-science project to help keep athletes healthy. When I'm not coding, I'm out in the sun playing soccer, surfing, or beach volleyball.",
+    "I'm Matthias Masiero — a rising junior at Santa Clara University (B.S. Computer Science, class of 2028) who loves building clean, fast things: web apps, low-latency systems, and ML tools. I lead transformer benchmarking for crisis-signal detection under Dr. Smita Ghosh, with work accepted to ASONAM 2026 (Springer LNCS), and I'm deep into quantum computing (IBM Q / Qiskit). When I'm not coding, I'm out in the sun playing soccer, surfing, or beach volleyball.",
   location: "Santa Clara, CA",
   email: "matthiasmasiero0@gmail.com",
-  phone: "+1-908-432-5309",
   links: {
     github: "https://github.com/MatthiasMasiero",
     linkedin: "https://www.linkedin.com/in/matthiasmasiero",
@@ -16,34 +15,49 @@ export const PROFILE = {
 export const SKILLS = {
   languages: [
     "Python",
-    "Java",
     "C++",
-    "Swift",
-    "HTML",
-    "CSS",
+    "Java",
+    "TypeScript",
     "JavaScript",
     "SQL",
-    "TypeScript",
-    "OCaml (partial knowledge)",
+    "Swift",
+    "OCaml",
     "Qiskit",
-    "OpenQASM (learning)",
+    "OpenQASM",
+    "HTML/CSS",
   ],
   tools: [
     "AWS (Lambda, EC2, S3, SageMaker, CloudWatch, API Gateway, Amplify)",
     "Docker",
     "CI/CD Pipelines",
+    "PyTorch",
+    "Hugging Face Transformers",
+    "scikit-learn",
     "TensorFlow",
+    "Supabase",
+    "Stripe",
+    "Redis",
     "Bash",
     "Git",
     "GraphQL",
     "IBM Quantum Platform",
-    "AI Agents (Amazon Q, LangChain, LlamaIndex, Auto-GPT, Claude)",
+    "AI Agents (Amazon Q, LangChain, LlamaIndex, Claude)",
   ],
 };
 
 export const PROJECTS = [
   {
-    title: "DevAngel — DevOps Incident Dashboard (Hackathon Winner)",
+    title: "QuantumDx — Quantum ML Diagnostic (Hack for Humanity 2026)",
+    desc:
+      "Quantum ML diagnostic for leptospirosis screening in low-resource clinics. Encodes 24 clinical features into an 8-qubit ZZFeatureMap and classifies by state fidelity against synthetic reference states, with federated SVM aggregation and DoD 5220.22-M secure erasure. Validated on 141 real patients (Kisumu County, Kenya) at 79% accuracy and 92% specificity, benchmarked against classical SVM and tree baselines.",
+    tags: ["Qiskit", "Quantum ML", "Federated Learning", "FastAPI", "React"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/H4H2026", label: "GitHub" },
+    ],
+    icon: "Sparkles",
+  },
+  {
+    title: "DevAngel — DevOps Incident Dashboard (2025 AWS Hackathon Winner)",
     desc:
       "Real-time incident analysis using AWS CloudWatch Logs, Lambda, Step Functions, API Gateway, Bedrock & EC2 to detect anomalies and generate Incident Cards with auto-fix suggestions.",
     tags: ["AWS", "Lambda", "Step Functions", "SageMaker", "Bedrock"],
@@ -55,7 +69,7 @@ export const PROJECTS = [
   {
     title: "High-Performance Order Matching Engine",
     desc:
-      "C++17 order matching engine processing 300,000+ orders/second with sub-4μs latency. Supports LIMIT, MARKET, and STOP orders using price-time priority matching. Features lock-free architecture, zero data loss under extreme load, and production-ready error handling.",
+      "C++ order matching engine processing 300,000+ orders/second with 3.3μs mean latency. Supports LIMIT, MARKET, and STOP orders using price-time priority matching built on intrusive linked lists and a 1M-object pre-allocated pool. Uses SPSC ring buffers and a zero-allocation hot path, sustaining zero data loss under extreme load (load-tested with 3M+ orders).",
     tags: ["C++", "Low Latency", "Trading Systems", "Performance"],
     links: [
       { href: "https://github.com/MatthiasMasiero/MatchingEngine", label: "GitHub" },
@@ -63,31 +77,15 @@ export const PROJECTS = [
     icon: "Cpu",
   },
   {
-    title: "CardTempo — Credit Optimizer",
-    desc: "Smart financial tool that boosts credit scores by 15-160 points through optimized payment timing. Features multi-card optimization, payment calendars, email reminders, what-if scenarios, and personalized card recommendations with application timelines.",
-    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
+    title: "CardTempo — Credit Optimizer (2nd Place, SCU Winter Challenge)",
+    desc:
+      "Full-stack Next.js / TypeScript fintech platform (25K+ LOC) that boosts credit scores by 15–160 points through optimized payment timing. Features multi-card optimization, payment calendars, what-if scenarios, and a personalized card recommendation engine, backed by Supabase PostgreSQL with row-level security, Stripe subscriptions, and Redis rate limiting.",
+    tags: ["Next.js", "TypeScript", "Supabase", "Stripe", "Redis"],
     links: [
       { href: "https://www.cardtempo.com/", label: "Website" },
       { href: "https://github.com/MatthiasMasiero/CardTempo", label: "GitHub" },
     ],
     icon: "Globe",
-  },
-  {
-    title: "Reward Points Management System",
-    desc:
-      "Web app + SQLite/Flask backend to track & visualize student reward data; collaborated with teacher on UX and feature set; actively used in classes.",
-    tags: ["Flask", "SQLite", "Data Viz"],
-    links: [
-      { href: "https://github.com/MatthiasMasiero/CompSci-RP-Website", label: "Repo (frontend)" },
-    ],
-    icon: "Star",
-  },
-  {
-    title: "Sports Science Internship (Coming Soon)",
-    desc: "Machine learning-based analytics platform for injury prediction and load optimization in collegiate soccer. Full case study coming soon.",
-    tags: ["Machine Learning", "Sports Analytics", "Python", "AWS"],
-    links: [],
-    icon: "Rocket",
   },
   {
     title: "This Website!",
@@ -102,6 +100,16 @@ export const PROJECTS = [
 ];
 
 export const QUANTUM = [
+  {
+    title: "QuantumDx — Leptospirosis Screening",
+    desc:
+      "Quantum ML diagnostic that encodes 24 clinical features into an 8-qubit ZZFeatureMap (linear entanglement, depth 2) and classifies by state fidelity F(ψ,φ) = |⟨ψ|φ⟩|² against 30 synthetic reference states. Validated on 141 real patients (Kisumu County, Kenya) at 79% accuracy and 92% specificity, and benchmarked against classical SVM and tree baselines.",
+    tags: ["Qiskit", "ZZFeatureMap", "Fidelity Kernel", "Healthcare"],
+    links: [
+      { href: "https://github.com/MatthiasMasiero/H4H2026", label: "GitHub" },
+    ],
+    icon: "Sparkles",
+  },
   {
     title: "GHZ-Interference",
     desc:
@@ -126,36 +134,36 @@ export const QUANTUM = [
 
 export const EXPERIENCE = [
   {
-    org: "Sports Science Internship, Santa Clara University Athletics",
-    when: "Jan 2025 - Present",
+    org: "Machine Learning Researcher, Santa Clara University (Dr. Smita Ghosh)",
+    when: "Nov 2025 - Present",
     bullets: [
-      "Processing 750K+ biometric data points per session across 22 athletes at 10Hz sampling frequency from Catapult GPS/accelerometer wearables to predict and prevent non‑contact injuries.",
-      "Engineering feature-extraction pipelines and applying regression and classification algorithms to optimize training loads.",
-      "Collaborating with trainers and data scientists to refine predictive models for injury prevention and recovery, targeting a 70% reduction in non‑contact injuries.",
+      "Benchmarked transformer classifiers (BERT, RoBERTa, MentalRoBERTa, ELECTRA, clinical BERT variants) across 8 public mental-health datasets for early self-harm and crisis-signal detection; models at 0.94–0.98 F1 in-domain collapsed below 0.40 F1 on a curated adversarial test set, exposing reliance on surface lexical cues.",
+      "Leading the research team building transformer baselines for conversation-level risk detection on a synthetic multi-turn dialogue corpus engineered to remove the lexical shortcuts identified in prior benchmarks.",
+      "Contributing models and evaluation to a paper on context-aware safeguards for conversational AI, accepted to ASONAM 2026 (Springer LNCS).",
     ],
   },
   {
-    org: "Machine Learning Researcher, Santa Clara University",
-    when: "Nov 2025 - Present",
+    org: "Sports Data Scientist, Santa Clara University Athletics",
+    when: "Jan 2025 - Present",
     bullets: [
-      "Benchmarked 6 transformer models (BERT, RoBERTa, MentalRoBERTa, ELECTRA, LLaMA-3.2) for suicidal ideation detection across 5 Reddit and Twitter datasets, achieving up to 98% accuracy on binary classification tasks.",
-      "Designed a 40 sample adversarial test set spanning implicit ideation, sarcasm, and ambiguous distress to stress test model robustness, exposing failure modes where surface level lexical cues proved insufficient.",
+      "Processing 750K+ biometric data points per session across 22 athletes at 10Hz sampling frequency from Catapult GPS/accelerometer wearables to predict and prevent non‑contact injuries.",
+      "Engineering feature-extraction pipelines and applying regression and classification algorithms to optimize training loads, targeting a 70% reduction in non‑contact injuries.",
+      "Built an athlete workload and injury-risk dashboard currently used by SCU teams and training staff; leading its adaptation and rollout to additional teams.",
     ],
   },
   {
     org: "ACM Event Coordinator, Santa Clara University",
-    when: "Oct 2024 - Present",
+    when: "Oct 2024 - June 2026",
     bullets: [
-      "Board member of the largest computer science club on campus; lead AI and quantum computing workshops teaching machine learning fundamentals and Qiskit implementations.",
+      "Board member of the largest computer science club on campus; designed and taught quantum computing workshops (Qiskit implementations), then AI/ML fundamentals workshops.",
       "Plan and run two major hackathons each year, with over 350 participants and multiple guest speakers.",
     ],
   },
   {
-    org: "Curriculum Development — Advanced Topics in Computing",
-    when: "Previously",
+    org: "Treasurer, Zeta Beta Tau Fraternity",
+    when: "2025 - Present",
     bullets: [
-      "Developed a data-science focused high-school computing curriculum and collaborated with teachers on course design.",
-      "Led the proposal and successfully obtained Board of Education approval for two advanced computing courses.",
+      "Manage a $150K annual budget for a 100-member chapter; automated dues collection and financial reporting.",
     ],
   },
 ];
@@ -164,7 +172,6 @@ export const EDUCATION = [
   {
     school: "Santa Clara University",
     degree: "B.S. in Computer Science, Minor in Physics",
-    year: "Sophomore",
+    year: "Expected June 2028",
   },
 ];
-
