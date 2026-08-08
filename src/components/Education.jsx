@@ -24,7 +24,7 @@ export function Education() {
       {EDUCATION.map((ed, i) => (
         <Card
           key={i}
-          className="bg-white/5 border-white/10 cursor-pointer hover:bg-white/[0.07] transition-colors"
+          className="cursor-pointer"
           onClick={handleCardClick}
         >
           <CardContent className="p-5">

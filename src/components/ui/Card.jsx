@@ -1,14 +1,14 @@
 import { cn } from "../../utils/cn";
 
-export function Card({ className = "", children }) {
+export function Card({ className = "", children, ...props }) {
   return (
-    <div className={cn("rounded-2xl border border-white/10 bg-white/5", className)}>
+    <div className={cn("glass-card", className)} {...props}>
       {children}
     </div>
   );
 }
 
 export function CardContent({ className = "", children }) {
-  return <div className={cn("p-5", className)}>{children}</div>;
+  return <div className={cn("relative z-10", className)}>{children}</div>;
 }
 

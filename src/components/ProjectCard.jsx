@@ -11,12 +11,13 @@ export function ProjectCard({ p }) {
 
   return (
     <motion.div
+      className="h-full"
       initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.35 }}
     >
-      <Card className="bg-white/5 border-white/10 hover:bg-white/20 transition-colors h-full">
+      <Card className="h-full">
         <CardContent className="p-4 md:p-5 flex flex-col gap-3">
           <div className="flex items-center gap-3 text-lg font-semibold">
             <div className="flex items-center justify-center w-5 h-5">

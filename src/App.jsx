@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { PROFILE, PROJECTS, QUANTUM } from "./constants/data";
 import { AnimatedBackground } from "./components/AnimatedBackground";
-import { CursorRipples } from "./components/CursorRipples";
+import { CursorLens } from "./components/CursorLens";
 import { ClickRipple } from "./components/ClickRipple";
 import { SmoothScrollStyles } from "./components/SmoothScrollStyles";
 import { Header } from "./components/Header";
@@ -28,9 +28,67 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen text-white bg-[#0b0d10] overflow-hidden">
+      {/* SVG displacement filter that warps the backdrop behind glass panels
+          (the "liquid" refraction). Referenced by .glass / .glass-card. */}
+      <svg
+        aria-hidden="true"
+        width="0"
+        height="0"
+        style={{ position: "absolute", pointerEvents: "none" }}
+      >
+        <filter
+          id="liquidGlass"
+          x="-20%"
+          y="-20%"
+          width="140%"
+          height="140%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.009 0.013"
+            numOctaves="2"
+            seed="4"
+            result="noise"
+          />
+          <feGaussianBlur in="noise" stdDeviation="1.1" result="soft" />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="soft"
+            scale="26"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+        {/* Stronger warp for the cursor lens */}
+        <filter
+          id="cursorWarp"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.015 0.02"
+            numOctaves="2"
+            seed="9"
+            result="cn"
+          />
+          <feGaussianBlur in="cn" stdDeviation="1.2" result="cnb" />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="cnb"
+            scale="58"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
       <SmoothScrollStyles />
       <AnimatedBackground />
-      {cursorEffectsEnabled && <CursorRipples />}
+      {cursorEffectsEnabled && <CursorLens />}
       <ClickRipple enabled={clickEffectsEnabled} />
       <div className="relative z-20">
         {/* Dropdown Menu */}
@@ -40,14 +98,14 @@ export default function App() {
           onMouseEnter={() => setDropdownOpen(true)}
           onMouseLeave={() => setDropdownOpen(false)}
         >
-          <button className="px-4 py-2 text-sm font-medium bg-white/10 hover:bg-white/15 rounded-lg backdrop-blur-md border border-white/20 transition-colors flex items-center gap-2">
+          <button className="px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-2 glass-btn">
             Toggle Features
             <ChevronDown className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
           {dropdownOpen && (
             <div className="absolute top-full right-0 pt-2 w-56">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg overflow-hidden shadow-xl">
+              <div className="glass rounded-2xl overflow-hidden shadow-xl">
               {/* Cursor Effects Toggle */}
               <div
                 onClick={() => setCursorEffectsEnabled(!cursorEffectsEnabled)}

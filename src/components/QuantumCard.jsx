@@ -78,7 +78,7 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure, resetTrigge
           : { duration: dur, ease: "easeInOut" }
       }
       whileHover={measuredStyle}
-      className="will-change-transform"
+      className="will-change-transform h-full"
       onClick={() => {
         setCollapsed(true);
         onMeasure && onMeasure(index);
@@ -92,7 +92,7 @@ export function QuantumCard({ p, index, onHover, onLeave, onMeasure, resetTrigge
         onLeave && onLeave();
       }}
     >
-      <div className="relative">
+      <div className="relative h-full">
         <ProjectCard p={p} />
         {!collapsed && hovering && effectsEnabled && (
           <motion.div

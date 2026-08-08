@@ -6,7 +6,7 @@ import { Chip } from "./ui/Chip";
 export function Skills() {
   return (
     <div className="grid md:grid-cols-2 gap-4">
-      <Card className="bg-white/5 border-white/10">
+      <Card>
         <CardContent className="p-5">
           <div className="flex items-center gap-2 font-semibold mb-3">
             <Globe className="w-4 h-4" /> Languages
@@ -18,7 +18,7 @@ export function Skills() {
           </div>
         </CardContent>
       </Card>
-      <Card className="bg-white/5 border-white/10">
+      <Card>
         <CardContent className="p-5">
           <div className="flex items-center gap-2 font-semibold mb-3">
             <Cpu className="w-4 h-4" /> Tools & Platforms

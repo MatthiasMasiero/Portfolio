@@ -3,8 +3,224 @@
 @tailwind utilities;
 
 :root{
-  --bg: #0b0d10;
+  --bg: #06070a;
+  --glass-radius: 22px;
 }
 
 html, body, #root { height: 100%; }
-body{ background: var(--bg); }
+body{
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    system-ui, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer components {
+  /* ---- Liquid Glass: shared frosted material ---- */
+  .glass,
+  .glass-card {
+    position: relative;
+    border-radius: var(--glass-radius);
+    /* clear-ish tint so the background refracts THROUGH the glass */
+    background-color: rgba(255, 255, 255, 0.025);
+    background-image:
+      /* glossy convex reflection, upper-left — the Apple sheen */
+      radial-gradient(
+        135% 90% at 14% -8%,
+        rgba(255, 255, 255, 0.22),
+        rgba(255, 255, 255, 0.04) 24%,
+        transparent 52%
+      ),
+      /* faint overall vibrancy */
+      linear-gradient(
+        150deg,
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.015) 46%,
+        rgba(255, 255, 255, 0.05)
+      );
+    /* light blur so the grid stays visible (refracted, not erased) */
+    -webkit-backdrop-filter: blur(7px) saturate(180%) brightness(1.08);
+    backdrop-filter: blur(7px) saturate(180%) brightness(1.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 14px 42px -10px rgba(0, 0, 0, 0.6),               /* float */
+      0 0 0 0.5px rgba(255, 255, 255, 0.06),               /* crisp outer rim */
+      inset 0 1.5px 1px -0.5px rgba(255, 255, 255, 0.85),  /* bright top bevel */
+      inset 1px 0 1px -0.5px rgba(255, 255, 255, 0.28),    /* left bevel */
+      inset 0 -18px 30px -20px rgba(0, 0, 0, 0.65),        /* inner depth = thickness */
+      inset 0 -1px 1px -0.5px rgba(255, 255, 255, 0.1);
+  }
+
+  /* ---- Interactive card: lift + specular light-sweep on hover ---- */
+  .glass-card {
+    overflow: hidden;
+    transition:
+      transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.4s ease,
+      background-color 0.4s ease,
+      border-color 0.4s ease;
+  }
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      115deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.12) 46%,
+      rgba(255, 255, 255, 0.02) 56%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: translateX(-25%);
+    transition:
+      opacity 0.5s ease,
+      transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    background-color: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow:
+      0 22px 50px -10px rgba(0, 0, 0, 0.6),
+      0 0 44px -10px rgba(167, 139, 250, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.08);
+  }
+  .glass-card:hover::after {
+    opacity: 1;
+    transform: translateX(25%);
+  }
+
+  /* ---- Glass pill ---- */
+  .glass-chip {
+    background-color: rgba(255, 255, 255, 0.06);
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.02)
+    );
+    -webkit-backdrop-filter: blur(14px) saturate(170%);
+    backdrop-filter: blur(14px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+      0 2px 6px rgba(0, 0, 0, 0.28);
+  }
+
+  /* ---- Glass button ---- */
+  .glass-btn {
+    background-color: rgba(255, 255, 255, 0.09);
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0.04)
+    );
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+      0 4px 12px -2px rgba(0, 0, 0, 0.35);
+    transition:
+      transform 0.2s ease,
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .glass-btn:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.65),
+      0 8px 20px -4px rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+  .glass-btn:active {
+    transform: translateY(0);
+  }
+
+  /* ---- Tinted primary glass (CTA) ---- */
+  .glass-btn--primary {
+    background-image: linear-gradient(
+      180deg,
+      rgba(186, 176, 255, 0.42),
+      rgba(126, 178, 255, 0.14)
+    );
+    border-color: rgba(190, 180, 255, 0.45);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6),
+      0 8px 24px -6px rgba(139, 92, 246, 0.55);
+  }
+  .glass-btn--primary:hover {
+    background-image: linear-gradient(
+      180deg,
+      rgba(196, 186, 255, 0.55),
+      rgba(136, 188, 255, 0.2)
+    );
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.7),
+      0 12px 30px -6px rgba(139, 92, 246, 0.65);
+  }
+}
+
+/* Real liquid refraction where supported (Chromium/Arc): warp the backdrop
+   with an SVG displacement map. Unlayered so it overrides the safe base;
+   browsers without support keep the plain blur above. */
+@supports (backdrop-filter: url("#liquidGlass")) {
+  .glass,
+  .glass-card {
+    -webkit-backdrop-filter: blur(3px) saturate(185%) brightness(1.08) url(#liquidGlass);
+    backdrop-filter: blur(3px) saturate(185%) brightness(1.08) url(#liquidGlass);
+  }
+}
+
+/* The Quantum cards animate inside a blurred, 3D-transformed parent, which
+   isolates backdrop-filter and makes Chromium paint a black backdrop (the
+   "black boxes"). Inside #quantum, drop backdrop-filter and use a
+   self-contained translucent fill so the panels stay glassy with no artifact. */
+#quantum .glass,
+#quantum .glass-card,
+#quantum .glass-chip,
+#quantum .glass-btn {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#quantum .glass-card {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+#quantum .glass-chip {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+#quantum .glass-btn {
+  background-color: rgba(255, 255, 255, 0.13);
+}
+
+/* Cursor lens: warps ONLY the geometry of the background grid beneath the
+   pointer (Chromium/Arc) — no glow, brightness, or tint, so there is no
+   visible "bubble", just the distortion. Falls back to nothing elsewhere. */
+.cursor-lens {
+  -webkit-backdrop-filter: url(#cursorWarp);
+  backdrop-filter: url(#cursorWarp);
+  /* fade the circular distortion out at the edges — no hard ring */
+  -webkit-mask-image: radial-gradient(circle at center, #000 28%, transparent 68%);
+  mask-image: radial-gradient(circle at center, #000 28%, transparent 68%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card,
+  .glass-card::after,
+  .glass-btn {
+    transition: none;
+  }
+  .glass-card:hover {
+    transform: none;
+  }
+  .glass-card:hover::after {
+    opacity: 0;
+  }
+}

@@ -42,7 +42,7 @@ export function Header() {
         </nav>
         <div className="grid md:grid-cols-12 gap-5 mt-8">
           <motion.div
-            className="md:col-span-7 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur"
+            className="md:col-span-7 glass p-6"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -88,7 +88,7 @@ export function Header() {
             </div>
           </motion.div>
           <motion.div
-            className="md:col-span-5 bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur"
+            className="md:col-span-5 glass p-5 md:p-6"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
